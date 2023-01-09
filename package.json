@@ -1,25 +1,41 @@
 {
   "name": "makchabot",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "repository": "https://github.com/danieluhm2004/makchabot.git",
   "author": "danieluhm2004 <iam@dan.al>",
   "license": "MIT",
   "scripts": {
-    "start": "node .",
-    "start:dev": "tsc-watch --onSuccess \"node .\"",
+    "start": "doppler run --command \"node .\"",
+    "start:dev": "tsc-watch --onSuccess \"yarn start\"",
+    "start:update": "doppler run --command \"ts-node scripts/update-stations.ts\"",
     "build": "rimraf dist && tsc",
     "build:docker": "docker build -t makchabot .",
     "lint": "eslint \"src/**/*.ts\" --fix"
   },
   "dependencies": {
+    "@elastic/ecs-winston-format": "^1.3.1",
+    "@grammyjs/stateless-question": "^3.0.1",
+    "@grammyjs/storage-typeorm": "^2.0.2",
+    "axios": "^1.2.2",
+    "dayjs": "^1.11.7",
+    "envalid": "^7.3.1",
+    "grammy": "^1.13.0",
+    "lodash": "^4.17.21",
+    "mysql2": "^3.0.1",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.3.11",
     "winston": "^3.8.2"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/lodash": "^4.14.191",
+    "@types/node": "^18.11.18",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
     "@typescript-eslint/parser": "^5.48.1",
     "eslint": "^8.31.0",
     "rimraf": "^4.0.4",
+    "ts-node": "^10.9.1",
     "tsc-watch": "^6.0.0",
     "typescript": "^4.9.4"
   }
