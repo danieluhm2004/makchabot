@@ -19,6 +19,9 @@ export class Schedule extends BaseEntity {
   chatId: number;
 
   @Column()
+  username: string;
+
+  @Column()
   alertedAt: Date;
 
   @Column()

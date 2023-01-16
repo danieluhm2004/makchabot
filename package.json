@@ -23,6 +23,7 @@
     "grammy": "^1.13.0",
     "lodash": "^4.17.21",
     "mysql2": "^3.0.1",
+    "node-schedule": "^2.1.1",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.11",
     "winston": "^3.8.2"
@@ -31,6 +32,7 @@
     "@types/axios": "^0.14.0",
     "@types/lodash": "^4.14.191",
     "@types/node": "^18.11.18",
+    "@types/node-schedule": "^2.1.0",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
     "@typescript-eslint/parser": "^5.48.1",
     "eslint": "^8.31.0",

@@ -1,9 +1,9 @@
-import { MyContext } from '..';
-import { ReplyToMessageContext } from '@grammyjs/stateless-question/dist/source/identifier';
-import { Schedule } from '../entities/schedule';
 import { StatelessQuestion } from '@grammyjs/stateless-question';
+import { ReplyToMessageContext } from '@grammyjs/stateless-question/dist/source/identifier';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { MyContext } from '..';
+import { Schedule } from '../entities/schedule';
 
 export const AskServiceDayQuestion = new StatelessQuestion(
   'AskServiceDay',
@@ -46,6 +46,7 @@ export const AskServiceDayQuestion = new StatelessQuestion(
     await Schedule.create({
       chatId: ctx.message.chat.id,
       userId: (await ctx.getAuthor()).user.id,
+      username: await (await ctx.getAuthor()).user.username,
       isAlerted: false,
       alertedAt: lastTime,
     }).save();

@@ -1,14 +1,16 @@
-import { Bot, Context, SessionFlavor } from 'grammy';
-import { SessionData, SessionMiddleware } from './middlewares/session';
 import { cleanEnv, host, port, str } from 'envalid';
+import { Bot, Context, SessionFlavor } from 'grammy';
+import { DataSource, LessThan } from 'typeorm';
+import { SessionData, SessionMiddleware } from './middlewares/session';
 
-import { DataSource } from 'typeorm';
-import { QuestionMiddleware } from './questions';
+import dayjs from 'dayjs';
+import { scheduleJob } from 'node-schedule';
+import { onMakchaCommand } from './commands/makcha';
 import { Schedule } from './entities/schedule';
 import { Session } from './entities/session';
 import { Station } from './entities/station';
+import { QuestionMiddleware } from './questions';
 import { logger } from './tools/logger';
-import { onMakchaCommand } from './commands/makcha';
 import { reporter } from './tools/reporter';
 
 export type MyContext = Context & SessionFlavor<SessionData>;
@@ -48,6 +50,31 @@ async function main() {
   bot.use(...QuestionMiddleware());
   bot.command('makcha', onMakchaCommand);
   logger.info('텔레그램 봇을 시작합니다.');
+
+  scheduleJob('* * * * *', async () => {
+    const schedules = await Schedule.find({
+      where: {
+        isAlerted: false,
+        alertedAt: LessThan(dayjs().add(15, 'minutes').toDate()),
+      },
+    });
+
+    for (const schedule of schedules) {
+      await bot.api.sendMessage(
+        schedule.chatId,
+        `[${schedule.username}](tg://user?id=${
+          schedule.userId
+        })님! 지하철 막차가 15분 남았습니다. (${dayjs(
+          schedule.alertedAt,
+        ).format('HH시 mm분')})`,
+        { parse_mode: 'Markdown' },
+      );
+
+      schedule.isAlerted = true;
+      await schedule.save();
+    }
+  });
+
   await bot.start();
 }
 
