@@ -9,6 +9,7 @@
     "start": "doppler run --command \"node .\"",
     "start:dev": "tsc-watch --onSuccess \"yarn start\"",
     "start:update": "doppler run --command \"ts-node scripts/update-stations.ts\"",
+    "start:prod": "node dist/src/index.js",
     "build": "rimraf dist && tsc",
     "build:docker": "docker build -t makchabot .",
     "lint": "eslint \"src/**/*.ts\" --fix"
